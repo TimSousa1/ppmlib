@@ -5,23 +5,9 @@
 #define PPM_LIB_IMPL_TIM
 #include "ppm.h"
 
-
-enum MAIN_ERROR {
-    MALLOC_ERR=1,
-    IO_ERR,
+enum ERR {
+    MALLOC_ERR,
 };
-
-
-void print_main_error(int err) {
-    switch (err) {
-        case MALLOC_ERR:
-            fprintf(stderr, "error: MALLOC_ERR\n");
-            break;
-        case OVER_BIT_LIM:
-            fprintf(stderr, "error: OVER_BIT_LIM\n");
-            break;
-    }
-}
 
 
 int main(void) {
@@ -37,6 +23,10 @@ int main(void) {
         magic_type = -1;
 
     img = fopen("in.ppm", "r");
+    if (!img) {
+        fprintf(stderr, "ERROR: file either missing or some other IO error occurred.");
+        return PPM_IO_ERR;
+    }
 
     if ((err = read_ppm_header(img, &w, &h, &b, &magic_type))) {
         print_ppm_error(err);
@@ -47,6 +37,7 @@ int main(void) {
     pixels = malloc(w*h*3);
     if (!pixels) {
         fclose(img);
+        fprintf(stderr, "ERROR: malloc failed.");
         return MALLOC_ERR;
     }
 
@@ -63,7 +54,8 @@ int main(void) {
     if (!out) {
         fclose(img);
         free(pixels);
-        return IO_ERR; 
+        fprintf(stderr, "ERROR: could not create output file.");
+        return PPM_IO_ERR; 
     }
 
     write_ppm_p6(pixels, out, w, h, b);
