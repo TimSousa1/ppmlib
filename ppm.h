@@ -15,6 +15,7 @@ enum MAGIC_TYPE {
     P3, P6
 };
 
+
 void print_ppm_error(int32_t err);
 int32_t read_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, int32_t b);
 int32_t write_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, int32_t b);
@@ -51,7 +52,7 @@ int32_t read_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, int32_t 
     n_read = fscanf(img, "%*s %*d %*d %*d ");
     if (n_read) return PPM_IO_ERR;
 
-    for (int32_t i = 0; i < w*h; i++) {
+    for (uint32_t i = 0; i < w*h; i++) {
         n_read = fscanf(img, "%hhd %hhd %hhd", &pixels[3*i], &pixels[3*i+1], &pixels[3*i+2]);
         if (n_read != 3) return PPM_IO_ERR;
     }
@@ -64,8 +65,8 @@ int32_t write_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, int32_t
     fprintf(img, "%s\n%d %d\n%d\n", "P3", w, h, b);
 
     int32_t i = 0;
-    for (int32_t y = 0; y < h; y++) {
-        for (int32_t x = 0; x < w; x++) {
+    for (uint32_t y = 0; y < h; y++) {
+        for (uint32_t x = 0; x < w; x++) {
             fprintf(img, "%u %u %u ", pixels[3*i], pixels[3*i+1], pixels[3*i+2]);
             i++;
         }
@@ -102,7 +103,7 @@ int32_t write_ppm_p6(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, int32_t
     n_bytes = fwrite(pixels, 1, w*h*3, img);
 
     printf("bytes written: %d\n", n_bytes);
-    if (n_bytes != w*h*3) return PPM_IO_ERR;
+    if (n_bytes != (int32_t) (w*h*3)) return PPM_IO_ERR;
 
     return 0;
 }
