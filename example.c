@@ -17,10 +17,10 @@ int main(void) {
          *out = NULL;
     u_int8_t *pixels = NULL;
 
-    int32_t w = 0, 
+    uint32_t w = 0, 
         h = 0, 
-        b = 0, 
-        magic_type = -1;
+        b = 0;
+    int32_t magic_type = -1;
 
     img = fopen("in.ppm", "r");
     if (!img) {
