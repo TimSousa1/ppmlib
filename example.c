@@ -24,7 +24,7 @@ int main(void) {
 
     img = fopen("in.ppm", "r");
     if (!img) {
-        fprintf(stderr, "ERROR: file either missing or some other IO error occurred.");
+        perror("fopen()");
         return PPM_IO_ERR;
     }
 
@@ -37,7 +37,7 @@ int main(void) {
     pixels = malloc(w*h*3);
     if (!pixels) {
         fclose(img);
-        fprintf(stderr, "ERROR: malloc failed.");
+        perror("malloc()");
         return MALLOC_ERR;
     }
 
@@ -54,7 +54,7 @@ int main(void) {
     if (!out) {
         fclose(img);
         free(pixels);
-        fprintf(stderr, "ERROR: could not create output file.");
+        perror("fopen()");
         return PPM_IO_ERR; 
     }
 
