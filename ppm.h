@@ -53,7 +53,7 @@ int32_t read_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t
     if (n_read) return PPM_IO_ERR;
 
     for (uint32_t i = 0; i < w*h; i++) {
-        n_read = fscanf(img, "%hhd %hhd %hhd", &pixels[3*i], &pixels[3*i+1], &pixels[3*i+2]);
+        n_read = fscanf(img, "%hhu %hhu %hhu", &pixels[3*i], &pixels[3*i+1], &pixels[3*i+2]);
         if (n_read != 3) return PPM_IO_ERR;
     }
 
@@ -114,7 +114,7 @@ int32_t read_ppm_header(FILE *img, uint32_t *w, uint32_t *h, uint32_t *b, int32_
     char magic[3];
 
     rewind(img);
-    n_read = fscanf(img, "%s %d %d %d", magic, w, h, b);
+    n_read = fscanf(img, "%s %u %u %u", magic, w, h, b);
     if (n_read != 4) return PPM_IO_ERR;
 
     if (strcmp(magic, "P3") == 0) *magic_type = P3;
