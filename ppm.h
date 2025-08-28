@@ -16,17 +16,17 @@ enum MAGIC_TYPE {
 };
 
 
-void print_ppm_error(int32_t err);
-int32_t read_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b);
-int32_t write_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b);
-int32_t read_ppm_p6(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b);
-int32_t write_ppm_p6(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b);
+   void print_ppm_error(int32_t err);
 int32_t read_ppm_header(FILE *img, uint32_t *w, uint32_t *h, uint32_t *b, int32_t *magic_type);
-int32_t read_ppm(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b, int32_t magic_type);
+int32_t     read_ppm_p3(uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b);
+int32_t     read_ppm_p6(uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b);
+int32_t        read_ppm(uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b, const int32_t magic_type);
+int32_t    write_ppm_p3(const uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b);
+int32_t    write_ppm_p6(const uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b);
 
 #ifdef PPM_LIB_IMPL_TIM
 
-void print_ppm_error(int32_t err) {
+void print_ppm_error(const int32_t err) {
     switch (err) {
         case PPM_MAGIC_MALFORMED:
             fprintf(stderr, "error: MAGIC_MALFORMED\n");
@@ -43,7 +43,7 @@ void print_ppm_error(int32_t err) {
 
 
 // expects a 255 bitwitdh
-int32_t read_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b) {
+int32_t read_ppm_p3(uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b) {
     int32_t n_read = -1;
 
     if (b > 255) return PPM_OVER_BIT_LIM;
@@ -60,7 +60,7 @@ int32_t read_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t
     return 0;
 }
 
-int32_t write_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b) {
+int32_t write_ppm_p3(const uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b) {
     rewind(img);
     fprintf(img, "%s\n%d %d\n%d\n", "P3", w, h, b);
 
@@ -78,7 +78,7 @@ int32_t write_ppm_p3(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_
 
 
 
-int32_t read_ppm_p6(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b) {
+int32_t read_ppm_p6(uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b) {
     int32_t n_read = -1;
 
     if (b > 255) return PPM_OVER_BIT_LIM;
@@ -95,7 +95,7 @@ int32_t read_ppm_p6(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t
     return 0;
 }
 
-int32_t write_ppm_p6(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b) {
+int32_t write_ppm_p6(const uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b) {
     rewind(img);
     fprintf(img, "%s\n%d %d\n%d\n", "P6", w, h, b);
 
@@ -124,7 +124,7 @@ int32_t read_ppm_header(FILE *img, uint32_t *w, uint32_t *h, uint32_t *b, int32_
     return 0;
 }
 
-int32_t read_ppm(uint8_t *pixels, FILE *img, uint32_t w, uint32_t h, uint32_t b, int32_t magic_type) {
+int32_t read_ppm(uint8_t *pixels, FILE *img, const uint32_t w, const uint32_t h, const uint32_t b, const int32_t magic_type) {
     int32_t err = 0;
     switch (magic_type) {
         case P3:
